@@ -12,6 +12,11 @@ Através de dumps programados da estrutura de cada banco de dados/tabelas da Mul
 - Os assignees devem ter permissão `push` para poderem ser incluídos. Serão ignorados caso contrário.
 
 ## Instalação
+Crie um arquivo chamado `.yarnrc` na raíz do seu projeto com o seguinte conteúdo:
+```
+"@multiplierx:registry" "https://npm.pkg.github.com"
+```
+No seu terminal rode o comando:
 ```bash
 $ yarn add @multiplierx/hub-integrity
 ```
