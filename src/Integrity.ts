@@ -30,9 +30,11 @@ type TDatabaseAuthentication = {
 class Integrity {
     private octokit: Octokit;
     private connection: mysql.Connection;
-    private dumpFilename: string;
     private running: boolean;
     private scheduled: boolean;
+
+    private dumpFilename: string;
+    private dumpPath = resolve(process.cwd(), 'dumps');
 
     constructor (private databaseAuthentication: TDatabaseAuthentication, private githubAuthentication: TGithubAuthentication, private issue?: TGithubIssue) {
       if (!this.githubAuthentication?.token) {
@@ -47,15 +49,15 @@ class Integrity {
         throw new Error('Please provide a valid database connection details')
       }
 
-      if (!existsSync(resolve(__dirname, 'dumps'))) {
-        mkdirSync(resolve(__dirname, 'dumps'))
+      if (!existsSync(this.dumpPath)) {
+        mkdirSync(this.dumpPath)
       }
 
       this.octokit = new Octokit({
         auth: this.githubAuthentication.token
       })
 
-      this.dumpFilename = resolve(__dirname, 'dumps', `${this.databaseAuthentication.database}.dump`)
+      this.dumpFilename = resolve(this.dumpPath, `${this.databaseAuthentication.database}.dump`)
     }
 
     async run (): Promise<void> {
